@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-api
+  labels:
+    app: user-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-api
+  template:
+    metadata:
+      name: user-api
+      labels:
+        app: user-api
+    spec:
+      containers:
+        - name: user-api
+          image: tobiaszimmer/user-api:v5
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: dbHost
+                  name: mysql-configmap
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-api
+spec:
+  selector:
+    app: user-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: LoadBalancer
