@@ -15,6 +15,12 @@ install_local() {
 
 install_prod() {
   install_mysql
+  # setup ingress
+  install_all_apps
+}
+
+install_all_apps() {
+  find "$cwd/apps" -name "*.yaml" -exec kubectl apply -f {} \;
 }
 
 ensure_minikube() {
