@@ -4,3 +4,6 @@ metadata:
   name: mysql-configmap
 data:
   dbHost: mysql
+  dbName: user_api
+  dbUsername: root
+  dbPassword: "1234"

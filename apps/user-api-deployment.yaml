@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: user-api
-          image: tobiaszimmer/user-api:v5
+          image: tobiaszimmer/user-api:v6
           ports:
             - containerPort: 8080
           imagePullPolicy: Always
@@ -26,6 +26,21 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: dbHost
+                  name: mysql-configmap
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: dbName
+                  name: mysql-configmap
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: dbUsername
+                  name: mysql-configmap
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: dbPassword
                   name: mysql-configmap
       restartPolicy: Always
 ---
