@@ -13,9 +13,9 @@ provider "linode" {
 
 # linode server
 resource "linode_instance" "example_instance" {
-  label  = "example_instance_label"
-  image  = "linode/ubuntu18.04"
-  region = "eu-central"
+  label           = "example_instance_label"
+  image           = "linode/ubuntu18.04"
+  region          = "eu-central"
   authorized_keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPWK4W5z/J4sjt5skaK/ClvGXj1/VD2omWA4lAGVp81q tobias.zimmer007@gmail.com"
   ]
@@ -80,5 +80,3 @@ resource "linode_firewall" "example_firewall" {
   linodes         = [linode_instance.example_instance.id]
 }
 
-variable "token" {}
-variable "ssh_private_key" {}

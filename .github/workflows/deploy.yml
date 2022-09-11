@@ -33,4 +33,8 @@ jobs:
         run: terraform init
 
       - name: Deploy
-        run: terraform apply -input=false -auto-approve
+        run: terraform apply \
+          -input=false \
+          -auto-approve \
+          -var 'token=${{ secrets.TF_TOKEN }}' \
+          -var 'ssh_private_key=${{ secrets.SSH_KEY }}'
