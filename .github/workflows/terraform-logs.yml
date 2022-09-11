@@ -1,3 +1,4 @@
+name: Terraform Logs
 on: pull_request
 
 jobs:
