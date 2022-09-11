@@ -30,4 +30,3 @@ _Production_
 ```bash
 sh install.sh prod
 ```
-
