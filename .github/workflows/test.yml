@@ -23,7 +23,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Initialize
-        run: terraform init
+        run: TF_TOKEN_app_terraform_io=${secrets.TF_TOKEN} terraform init
 
       - name: Format and check
         run: terraform fmt -check
