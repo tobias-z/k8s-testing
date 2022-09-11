@@ -2,6 +2,7 @@ on: pull_request
 
 jobs:
   logs:
+    name: Terraform PR Logs
     runs-on: ubuntu-latest
 
     env:
