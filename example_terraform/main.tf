@@ -47,12 +47,12 @@ resource "linode_instance" "example_instance" {
 }
 
 module "my_domain" {
-  source = "../modules/domain"
-  domain = "tobias-z.com"
+  source     = "../modules/domain"
+  domain     = "tobias-z.com"
   subdomains = ["test.tobias-z.com", "user-api.tobias-z.com"]
-  email  = "tobias.zimmer007@gmail.com"
-  target_ip = linode_instance.example_instance.ip_address
-  ttl_sec = 300 # 5 min
+  email      = "tobias.zimmer007@gmail.com"
+  target_ip  = linode_instance.example_instance.ip_address
+  ttl_sec    = 300 # 5 min
 }
 
 resource "linode_firewall" "example_firewall" {
