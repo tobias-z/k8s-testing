@@ -1,0 +1,3 @@
+example_terraform/terraform.tfstate
+example_terraform/terraform.tfstate.backup
+example_terraform/terraform.tfvars
