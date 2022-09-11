@@ -1,15 +1,18 @@
+name: Terraform Logs
 on: pull_request
 
 jobs:
   logs:
+    name: Terraform PR Logs
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./example_terraform
 
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
+      WORKING_DIR: ./example_terraform
+
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR }}
 
     steps:
       - name: Checkout
@@ -75,7 +78,7 @@ jobs:
             
             </details>
             
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.WORKING_DIR }}\`, Workflow: \`${{ github.workflow }}\`*`;
             
             // 3. If we have a comment, update it, otherwise create a new one
             if (botComment) {
