@@ -3,7 +3,7 @@ name: Validate
 on: [push, pull_request]
 
 jobs:
-  test:
+  terraform:
     name: Test
     runs-on: ubuntu-latest
 
