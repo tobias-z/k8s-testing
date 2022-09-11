@@ -13,7 +13,7 @@ jobs:
         shell: bash
 
     env:
-      TF_TOKEN_app_terraform_io: ${secrets.TF_TOKEN}
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
 
     steps:
       - name: Checkout
@@ -23,7 +23,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Initialize
-        run: TF_TOKEN_app_terraform_io=${secrets.TF_TOKEN} terraform init
+        run: terraform init
 
       - name: Format and check
         run: terraform fmt -check
