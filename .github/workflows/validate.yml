@@ -1,7 +1,7 @@
-on:
-  push:
-    branches:
-      - main
+name: Validate
+
+on: [push, pull_request]
+
 jobs:
   test:
     name: Test
@@ -30,4 +30,3 @@ jobs:
 
       - name: Validate
         run: terraform validate
-
