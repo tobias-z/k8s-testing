@@ -1,6 +1,6 @@
 example_terraform/terraform.tfstate
 example_terraform/terraform.tfstate.backup
-example_terraform/terraform.tfvars
+example_terraform/save.terraform.tfvars
 
 ### Terraform ###
 # Local .terraform directories

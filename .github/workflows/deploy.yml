@@ -21,7 +21,6 @@ jobs:
 
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
-      SSH_KEY: ${{ secrets.SSH_KEY }}
 
     steps:
       - name: Checkout
@@ -35,4 +34,4 @@ jobs:
 
       - name: Deploy
         run: |
-          terraform apply -input=false -auto-approve -var token="$TF_TOKEN_app_terraform_io" -var ssh_private_key="$SSH_KEY"
+          terraform apply -input=false -auto-approve
