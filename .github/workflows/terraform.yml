@@ -30,3 +30,7 @@ jobs:
 
       - name: Validate
         run: terraform validate
+
+      - name: Deploy
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -input=false -auto-approve
