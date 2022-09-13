@@ -4,11 +4,11 @@ resource "helm_release" "nginx_ingress" {
   chart     = "ingress-nginx"
 }
 
-resource "helm_release" "mysql_operator" {
-  depends_on = [helm_release.nginx_ingress]
-  name  = "mysql-operator"
-  repository = "https://mysql.github.io/mysql-operator"
-  chart = "mysql-operator"
-  namespace = "mysql-operator"
-  create_namespace = true
-}
+#resource "helm_release" "mysql_operator" {
+#  depends_on = [helm_release.nginx_ingress]
+#  name  = "mysql-operator"
+#  repository = "https://mysql.github.io/mysql-operator"
+#  chart = "mysql-operator"
+#  namespace = "mysql-operator"
+#  create_namespace = true
+#}

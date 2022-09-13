@@ -18,13 +18,22 @@ resource "kubectl_manifest" "mysql_configmap" {
   yaml_body = file("k8s/persistence/mysql/mysql-configmap.yaml")
 }
 
-resource "kubectl_manifest" "mysql_cluster" {
-  depends_on = [kubectl_manifest.mysql_configmap, kubectl_manifest.mysql_secret, helm_release.mysql_operator]
-  yaml_body  = file("k8s/persistence/mysql/mysql-cluster.yaml")
+#resource "kubectl_manifest" "mysql_cluster" {
+#  depends_on = [kubectl_manifest.mysql_configmap, kubectl_manifest.mysql_secret, helm_release.mysql_operator]
+#  yaml_body  = file("k8s/persistence/mysql/mysql-cluster.yaml")
+#}
+
+resource "kubectl_manifest" "mysql_deployment" {
+  yaml_body = file("k8s/persistence/mysql/mysql-test-deployment.yaml")
+}
+
+resource "kubectl_manifest" "mysql_service" {
+  depends_on = [kubectl_manifest.mysql_deployment]
+  yaml_body  = file("k8s/persistence/mysql/mysql-test-service.yaml")
 }
 
 resource "kubectl_manifest" "deployments" {
-  depends_on = [kubectl_manifest.mysql_cluster, kubernetes_ingress.ingress]
+  depends_on = [kubectl_manifest.deployments, kubernetes_ingress_v1.ingress, kubectl_manifest.mysql_service]
   for_each   = fileset("k8s/apps/deployments", "*")
   yaml_body  = file("k8s/apps/deployments/${each.value}")
 }
@@ -35,13 +44,13 @@ resource "kubectl_manifest" "services" {
   yaml_body  = file("k8s/apps/services/${each.value}")
 }
 
-resource "kubernetes_ingress" "ingress" {
+resource "kubernetes_ingress_v1" "ingress" {
   wait_for_load_balancer = true
   metadata {
     name        = "ingress"
     annotations = {
-      "kubernetes.io/ingress.class"              = "nginx"
-#      "ingress.kubernetes.io/force-ssl-redirect" = "true"
+      "kubernetes.io/ingress.class" = "nginx"
+      #      "ingress.kubernetes.io/force-ssl-redirect" = "true"
     }
   }
   spec {
@@ -50,9 +59,14 @@ resource "kubernetes_ingress" "ingress" {
       http {
         path {
           backend {
-            service_name = "user-api"
-            service_port = 8080
+            service {
+              name = "user-api"
+              port {
+                number = 8080
+              }
+            }
           }
+          path_type = "Prefix"
           path = "/"
         }
       }
@@ -61,7 +75,7 @@ resource "kubernetes_ingress" "ingress" {
 }
 
 data "dns_a_record_set" "ingress-lb-ip" {
-  host = kubernetes_ingress.ingress.status.0.load_balancer.0.ingress.0.hostname
+  host = kubernetes_ingress_v1.ingress.status.0.load_balancer.0.ingress.0.hostname
 }
 
 module "domain" {
@@ -80,5 +94,5 @@ output "load_balancer_hostname" {
 
 # Display load balancer IP (typically present in GCP, or using Nginx ingress controller)
 output "load_balancer_ip" {
-  value = kubernetes_ingress.ingress.status.0.load_balancer.0.ingress.0.ip
+  value = kubernetes_ingress_v1.ingress.status.0.load_balancer.0.ingress.0.ip
 }

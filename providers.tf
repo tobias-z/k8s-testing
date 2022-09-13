@@ -3,7 +3,7 @@ terraform {
     organization = "tobias-z"
     hostname     = "app.terraform.io"
     workspaces {
-      name = "k8s-testing-v5"
+      name = "k8s-testing-v6"
     }
   }
   required_providers {
