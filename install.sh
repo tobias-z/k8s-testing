@@ -7,7 +7,7 @@ cwd=$(dirname "$(realpath "$0")")
 install_local() {
   ensure_minikube
   install_mysql
-  kubectl apply -f "$cwd/ingress/local-ingress.yaml"
+  kubectl apply -f "$cwd/k8s/ingress/local-ingress.yaml"
   if ! minikube addons list | grep enabled | grep ingress -q; then
       minikube addons enable ingress
   fi
@@ -20,7 +20,7 @@ install_prod() {
 }
 
 install_all_apps() {
-  find "$cwd/apps" -name "*.yaml" -exec kubectl apply -f {} \;
+  find "$cwd/k8s/apps" -name "*.yaml" -exec kubectl apply -f {} \;
 }
 
 ensure_minikube() {
@@ -34,10 +34,10 @@ ensure_minikube() {
 install_mysql() {
   kubectl apply -f https://raw.githubusercontent.com/mysql/mysql-operator/trunk/deploy/deploy-crds.yaml
   kubectl apply -f https://raw.githubusercontent.com/mysql/mysql-operator/trunk/deploy/deploy-operator.yaml
-  kubectl apply -f "$cwd/persistence/mysql/mysql-configmap.yaml"
-  kubectl apply -f "$cwd/persistence/mysql/mysql-secret.yaml"
-  kubectl apply -f "$cwd/persistence/mysql/mysql-cluster.yaml"
-  kubectl apply -f "$cwd/persistence/mysql/mysql-client.yaml"
+  kubectl apply -f "$cwd/k8s/persistence/mysql/mysql-configmap.yaml"
+  kubectl apply -f "$cwd/k8s/persistence/mysql/mysql-secret.yaml"
+  kubectl apply -f "$cwd/k8s/persistence/mysql/mysql-cluster.yaml"
+  kubectl apply -f "$cwd/k8s/persistence/mysql/mysql-client.yaml"
 }
 
 case $location in

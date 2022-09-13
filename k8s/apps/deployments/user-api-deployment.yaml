@@ -15,6 +15,23 @@ spec:
       labels:
         app: user-api
     spec:
+      initContainers:
+        - name: initialize-db
+          image: mysql/mysql-server:8.0
+          envFrom:
+            - secretRef:
+                name: mysql-secret
+          command:
+            - sh
+            - -c
+            - |
+              until mysql -u $rootUser --password=$rootPassword -h mysql -e 'show databases;'
+              do
+                echo "Waiting for mysql"
+                sleep 3
+              done
+              mysql -u $rootUser --password=$rootPassword -h mysql \
+                -e 'CREATE DATABASE IF NOT EXISTS user_api;'
       containers:
         - name: user-api
           image: tobiaszimmer/user-api:v6
@@ -43,15 +60,3 @@ spec:
                   key: dbPassword
                   name: mysql-configmap
       restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: user-api
-spec:
-  selector:
-    app: user-api
-  ports:
-    - port: 8080
-      targetPort: 8080
-  type: LoadBalancer

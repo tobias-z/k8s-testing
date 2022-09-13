@@ -1,6 +1,6 @@
 name: Validate
 
-on: [ push, pull_request ]
+on: [push, pull_request]
 
 jobs:
   terraform:
@@ -9,12 +9,6 @@ jobs:
 
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
-      WORKING_DIR: ./example_terraform
-
-    defaults:
-      run:
-        working-directory: ${{ env.WORKING_DIR }}
-        shell: bash
 
     steps:
       - name: Checkout
