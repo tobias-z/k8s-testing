@@ -1,1 +1,2 @@
 variable "token" {}
+variable "email" {}
